@@ -9,7 +9,8 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler, MinMaxScaler  
 
 def seleccion(Data):
-    st.subheader("Estandarización de Datos")
+    st.subheader("ACP")
+    st.write("**Estandarización de Datos**")
     st.write("Elección de borrado de Columnas de tipo Object")
     drop_column = borrado(Data)
     if drop_column is not None:
@@ -18,27 +19,47 @@ def seleccion(Data):
         if sel == 'Estandarización':
             st.subheader('Estandarización')
             Estandarizar = StandardScaler()
-            Mestantadar = Estandarizar.fit_transform(drop_column)
-            st.dataframe(Mestantadar)
+            MEstantadar = Estandarizar.fit_transform(drop_column)
+            st.dataframe(MEstantadar)
+            pca = PCA(0.85)     # pca=PCA(n_components=None), pca=PCA(.85)
+            pca.fit(MEstantadar)          # Se obtiene los componentes
+            st.write("**Matriz Componentes**")
+            st.dataframe(pca.components_)
+            st.write('**Varianza**')
+            Varianza = pca.explained_variance_ratio_
+            st.write('Proporción de varianza:',Varianza.tolist())
+
         elif sel == 'Normalización':
             st.subheader('Normalización')
             Normalizar = MinMaxScaler() 
-
+            MNormalizar = Normalizar.fit_transform(drop_column)
+            st.dataframe(MNormalizar) 
+            pca = PCA(0.85)     # pca=PCA(n_components=None), pca=PCA(.85)
+            pca.fit(MNormalizar)          # Se obtiene los componentes
+            st.write('**Matriz Componentes**')
+            st.write(pca.components_)
+            st.write('**Varianza**')
+            Varianza = pca.explained_variance_ratio_
+            st.write('Proporción de varianza:', Varianza.tolist())
 
 def borrado(Data):
-    #datos = Data.drop(Data.select_types(include = 'object').columns)
-    #st.table(datos)
-    st.write('Es necesario eliminar las variables de tipo OBJECT, se pueden consultar los tipos de variables en la sección: Análisis Exploratorio de Datos -> Tipos de Datos')
     options = st.multiselect(
       'Selecciona las columnas que serán eliminadas',
       Data.columns
     )
-    st.write('Nota: Es necesario eliminar las variables de tipo OBJECT, se pueden consultar los tipos de variables en la sección: Análisis Exploratorio de Datos -> Tipos de Datos')
-    st.write('Columnas Eliminadas:', options)
-    elimination = Data.drop(columns=options)
+    st.write('Nota: Es necesario eliminar las variables de tipo OBJECT o DATE, se pueden consultar los tipos de datos en la sección: Análisis Exploratorio de Datos -> Tipos de Datos')
+    col1, col2 = st.columns(2)
+    with col1:      
+        st.write('Columnas Eliminadas:', options)
+        elimination = Data.drop(columns=options)
+        
+    with col2:
+        st.write('Columnas Restantes:', elimination.columns.tolist())
+
     st.dataframe(elimination)
     return elimination
 
-#def seleccion(data, Estandar):
-#    Mestantadar = Estandar.fit_transform(data)
-#    st.dataframe(Mestantadar)
+
+
+#def seleccion(Estandar):
+    
