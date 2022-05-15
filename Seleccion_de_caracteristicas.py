@@ -2,6 +2,7 @@
 from io import SEEK_CUR
 from tkinter.tix import Select
 from xml.etree.ElementInclude import include
+from django.template import Origin
 import streamlit as st
 import pandas as pd
 import numpy as np                # Para crear vectores y matrices n dimensionales
@@ -13,7 +14,8 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 def seleccion_de_caracteristicas(Data):
     st.subheader("ACP")
     st.write("**Estandarización de Datos**")
-    st.write("Elección de borrado de Columnas de tipo Object")
+    st.write("Eliminación de Datos")
+    st.write('Nota: Es necesario eliminar las variables de tipo OBJECT o DATE, se pueden consultar los tipos de datos en la sección: Análisis Exploratorio de Datos -> Tipos de Datos')
     drop_column = borrado(Data)
     na_cero = drop_column.fillna(0)
     if drop_column is not None:
@@ -22,12 +24,12 @@ def seleccion_de_caracteristicas(Data):
         if sel == 'Estandarización':
             st.subheader('Estandarización')
             Estandarizar = StandardScaler()
-            seleccion(Estandarizar, na_cero)
+            seleccion(Estandarizar, na_cero, Data)
 
         elif sel == 'Normalización':
             st.subheader('Normalización')
             Normalizar = MinMaxScaler() 
-            seleccion(Normalizar, na_cero)
+            seleccion(Normalizar, na_cero, Data)
             
             
 
@@ -35,9 +37,8 @@ def seleccion_de_caracteristicas(Data):
 def borrado(Data):
     options = st.multiselect(
       'Selecciona las columnas que serán eliminadas',
-      Data.columns
+      Data.columns, key = 0
     )
-    st.write('Nota: Es necesario eliminar las variables de tipo OBJECT o DATE, se pueden consultar los tipos de datos en la sección: Análisis Exploratorio de Datos -> Tipos de Datos')
     col1, col2 = st.columns(2)
     with col1:      
         st.write('Columnas Eliminadas:', options)
@@ -51,7 +52,7 @@ def borrado(Data):
 
 
 
-def seleccion(Estandarizar, na_cero):
+def seleccion(Estandarizar, na_cero, Original):
     sum_varianza = 0 
     MEstandar = Estandarizar.fit_transform(na_cero)
     st.dataframe(MEstandar)
@@ -79,9 +80,21 @@ def seleccion(Estandarizar, na_cero):
     plt.ylabel('Varianza acumulada')
     plt.grid()
     plt.show()
+    st.set_option('deprecation.showPyplotGlobalUse', False)
     st.pyplot()
 
     st.write("**Proporción de Relevancia**")
-    st.dataframe(pd.DataFrame(pca.components_, columns=na_cero.columns))
+    Data = pd.DataFrame(pca.components_, columns=na_cero.columns)
+    st.dataframe(Data)
     st.write("**Identificación de Relevancia de Variables**")
-    st.write()
+    st.write("Seleciona las variables que se van a tener dependiendo de la relevancia, en un porcentaje seleccionado por el usuario por ejemplo '30%'")
+    st.write("Ejemplo:")
+    st.image('img/ejemplo_relevancia.png')
+    options2 = st.multiselect(
+      'Selecciona las columnas que serán eliminadas',
+      Data.columns, key = 1
+    )
+    st.dataframe(Data)
+    st.write('Columnas Eliminadas:', options2)
+    elimination = Original.drop(columns=options2)
+    st.dataframe(elimination)
