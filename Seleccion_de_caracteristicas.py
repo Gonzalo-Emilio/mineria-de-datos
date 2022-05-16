@@ -1,8 +1,3 @@
-#analisis exploratorio de datos
-from io import SEEK_CUR
-from tkinter.tix import Select
-from xml.etree.ElementInclude import include
-from django.template import Origin
 import streamlit as st
 import pandas as pd
 import numpy as np                # Para crear vectores y matrices n dimensionales
@@ -12,24 +7,31 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler, MinMaxScaler  
 
 def seleccion_de_caracteristicas(Data):
-    st.subheader("ACP")
-    st.write("**Estandarización de Datos**")
-    st.write("Eliminación de Datos")
-    st.write('Nota: Es necesario eliminar las variables de tipo OBJECT o DATE, se pueden consultar los tipos de datos en la sección: Análisis Exploratorio de Datos -> Tipos de Datos')
-    drop_column = borrado(Data)
-    na_cero = drop_column.fillna(0)
-    if drop_column is not None:
-        sel = st.selectbox('Selecciona una forma de estandarización de datos',
-        ('','Estandarización', 'Normalización'))
-        if sel == 'Estandarización':
-            st.subheader('Estandarización')
-            Estandarizar = StandardScaler()
-            seleccion(Estandarizar, na_cero, Data)
+    option = st.selectbox(
+     ' Elige un tipo de Selección de características',
+     ('ACP','ACD'))
+    if option == 'ACP':
+        st.subheader("ACP")
+        st.write("**Estandarización de Datos**")
+        st.write("Eliminación de Datos")
+        st.write('Nota: Es necesario eliminar las variables de tipo OBJECT o DATE, se pueden consultar los tipos de datos en la sección: Análisis Exploratorio de Datos -> Tipos de Datos')
+        drop_column = borrado(Data)
+        na_cero = drop_column.fillna(0)
+        if drop_column is not None:
+            sel = st.selectbox('Selecciona una forma de estandarización de datos',
+            ('','Estandarización', 'Normalización'))
+            if sel == 'Estandarización':
+                st.subheader('Estandarización')
+                Estandarizar = StandardScaler()
+                ACP(Estandarizar, na_cero, Data)
 
-        elif sel == 'Normalización':
-            st.subheader('Normalización')
-            Normalizar = MinMaxScaler() 
-            seleccion(Normalizar, na_cero, Data)
+            elif sel == 'Normalización':
+                st.subheader('Normalización')
+                Normalizar = MinMaxScaler() 
+                ACP(Normalizar, na_cero, Data)
+    if option == 'ACD':
+        st.subheader("ACD")
+        ACD(Data)
             
             
 
@@ -52,7 +54,7 @@ def borrado(Data):
 
 
 
-def seleccion(Estandarizar, na_cero, Original):
+def ACP(Estandarizar, na_cero, Original):
     sum_varianza = 0 
     MEstandar = Estandarizar.fit_transform(na_cero)
     st.dataframe(MEstandar)
@@ -90,11 +92,31 @@ def seleccion(Estandarizar, na_cero, Original):
     st.write("Seleciona las variables que se van a tener dependiendo de la relevancia, en un porcentaje seleccionado por el usuario por ejemplo '30%'")
     st.write("Ejemplo:")
     st.image('img/ejemplo_relevancia.png')
-    options2 = st.multiselect(
+    options = st.multiselect(
       'Selecciona las columnas que serán eliminadas',
       Data.columns, key = 1
     )
     st.dataframe(Data)
-    st.write('Columnas Eliminadas:', options2)
-    elimination = Original.drop(columns=options2)
-    st.dataframe(elimination)
+    st.write('Columnas Eliminadas:', options)
+    st.dataframe(Original.drop(columns=options))
+
+
+def ACD(Data):
+    st.write("Se realiza una evaluación visual de los datos respecto a la tabla de datos, a partir de la correlación de Pearson el usuario puede realizar un inspección, en la que se buscará relaciones altas")
+    st.write("De -1.0 a -0.70 y 0.70 a 1.0 se conocen como correlaciones fuertes o altas.")
+    st.write("De -0.69 a -0.31 y 0.31 a 0.70 se conocen como correlaciones moderadas o medias.")
+    st.write("De -0.30 a 0.0 y 0.0 a 0.30 se conocen como correlaciones débiles o bajas.")
+    CorrData = Data.corr(method = 'pearson')
+    plt.figure(figsize=(14,7))
+    MatrizInf = np.triu(CorrData)
+    sns.heatmap(CorrData, cmap='RdBu_r', annot=True, mask=MatrizInf)
+    plt.show()
+    st.pyplot()
+    options = st.multiselect(
+      'Selecciona las columnas que serán eliminadas',
+      Data.columns, key = 2
+    )
+    st.write('Columnas Eliminadas:', options)
+    
+    st.dataframe(Data.drop(columns=options))
+    
