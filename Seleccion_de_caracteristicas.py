@@ -23,15 +23,17 @@ def seleccion_de_caracteristicas(Data):
             if sel == 'Estandarización':
                 st.subheader('Estandarización')
                 Estandarizar = StandardScaler()
-                ACP(Estandarizar, na_cero, Data)
-
+                Data_caract = ACP(Estandarizar, na_cero, Data)
+                return Data_caract
             elif sel == 'Normalización':
                 st.subheader('Normalización')
                 Normalizar = MinMaxScaler() 
-                ACP(Normalizar, na_cero, Data)
+                Data_caract = ACP(Normalizar, na_cero, Data)
+                return Data_caract
     if option == 'ACD':
         st.subheader("ACD")
-        ACD(Data)
+        Data_caract = ACD(Data)
+        return Data_caract
             
             
 
@@ -98,7 +100,8 @@ def ACP(Estandarizar, na_cero, Original):
     )
     st.dataframe(Data)
     st.write('Columnas Eliminadas:', options)
-    st.dataframe(Original.drop(columns=options))
+    st.dataframe(na_cero.drop(columns=options))
+    return na_cero.drop(columns=options)
 
 
 def ACD(Data):
@@ -119,4 +122,5 @@ def ACD(Data):
     st.write('Columnas Eliminadas:', options)
     
     st.dataframe(Data.drop(columns=options))
+    return Data.drop(columns=options)
     

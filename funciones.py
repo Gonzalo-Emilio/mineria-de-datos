@@ -11,13 +11,18 @@ from Clustering import clutering
 #simulacion swtich case
 def Switch(Election,Data):
     if Election == 'Muestra de Datos':
+        st.header("Datos")
         st.dataframe(Data)
     elif Election == 'Análisis Exploratorio de Datos':
+        st.header("Análisis Exploratorio de Datos")
         EDA(Data)
     elif Election == 'Selección de características':
+        st.header("Selección de Características")
         seleccion_de_caracteristicas(Data)
     elif Election == 'Clustering':
-         clutering(Data)
+        st.header("Clústers")
+        #Data_Selection = seleccion_de_caracteristicas(Data)
+        clutering(Data)
     elif Election == 'Reglas de Asociación': 
         st.text('holaaa soy eda xd')
     elif Election == 'Pronóstico: Regresión lineal':
