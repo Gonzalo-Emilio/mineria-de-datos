@@ -91,14 +91,13 @@ def ACP(Estandarizar, na_cero, Original):
     Data = pd.DataFrame(pca.components_, columns=na_cero.columns)
     st.dataframe(Data)
     st.write("**Identificación de Relevancia de Variables**")
-    st.write("Seleciona las variables que se van a tener dependiendo de la relevancia, en un porcentaje seleccionado por el usuario por ejemplo '30%'")
+    st.write("Seleciona las variables que se van a tener dependiendo de la proporción de relevancia, en un porcentaje seleccionado por el usuario por ejemplo '30%'")
     st.write("Ejemplo:")
     st.image('img/ejemplo_relevancia.png')
     options = st.multiselect(
       'Selecciona las columnas que serán eliminadas',
       Data.columns, key = 1
     )
-    st.dataframe(Data)
     st.write('Columnas Eliminadas:', options)
     st.dataframe(na_cero.drop(columns=options))
     return na_cero.drop(columns=options)
