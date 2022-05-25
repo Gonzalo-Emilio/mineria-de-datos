@@ -7,6 +7,7 @@ import seaborn as sns
 from EDA import EDA       
 from Seleccion_de_caracteristicas import  seleccion_de_caracteristicas          
 from Clustering import clutering
+from Patrones_secuenciales import rda
 
 #simulacion swtich case
 def Switch(Election,Data):
@@ -21,10 +22,10 @@ def Switch(Election,Data):
         seleccion_de_caracteristicas(Data)
     elif Election == 'Clustering':
         st.header("Clústers")
-        #Data_Selection = seleccion_de_caracteristicas(Data)
         clutering(Data)
-    elif Election == 'Reglas de Asociación': 
-        st.text('holaaa soy eda xd')
+    elif Election == 'Patrones Secuenciales': 
+        st.header("Patrones Secuenciales")
+        rda(Data)
     elif Election == 'Pronóstico: Regresión lineal':
         st.text('holaaa soy eda xd') 
     elif Election == 'Clasificación: Regresión Logística':

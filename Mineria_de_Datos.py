@@ -17,7 +17,7 @@ if data is not None:
     Algoritmo = st.selectbox('Elige un algoritmo de implementacion',
                 ('Muestra de Datos','Análisis Exploratorio de Datos', 'Selección de características',  
                 'Clustering', 
-                'Reglas de Asociación', 
+                'Patrones Secuenciales', 
                 'Pronóstico: Regresión lineal', 
                 'Clasificación: Regresión Logística'))
     Switch(Algoritmo, dataframe)
