@@ -8,6 +8,7 @@ from EDA import EDA
 from Seleccion_de_caracteristicas import  seleccion_de_caracteristicas          
 from Clustering import clutering
 from Patrones_secuenciales import rda
+from bosques_aleatorios import Bosques
 
 #simulacion swtich case
 def Switch(Election,Data):
@@ -26,10 +27,11 @@ def Switch(Election,Data):
     elif Election == 'Patrones Secuenciales': 
         st.header("Patrones Secuenciales")
         rda(Data)
-    elif Election == 'Pronóstico: Regresión lineal':
+    elif Election == 'Árboles de Decisión':
         st.text('holaaa soy eda xd') 
-    elif Election == 'Clasificación: Regresión Logística':
-        st.text('holaaa soy eda xd')
+    elif Election == 'Bosques Aleatorios':
+        st.header("Bosques Aleatorios")
+        Bosques(Data)
 
 
 

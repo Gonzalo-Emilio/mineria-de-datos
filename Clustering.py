@@ -25,11 +25,11 @@ def clutering(Data):
      
         
 def geraquico(Data):
-  st.write("Si no identifica las variables a eliminar puede acceder previamente a la pestaña 'Selección de Características' donde encontrá dos formas de seleccionar que variables son necesarias para su análisis")
   options = st.multiselect(
       'Selecciona las columnas que serán eliminadas',
       Data.columns, key = 0
     )
+  st.write("Si no identifica las variables a eliminar puede acceder previamente a la pestaña 'Selección de Características' donde encontrá dos formas de seleccionar que variables son necesarias para su análisis")
   col1, col2 = st.columns(2)
   with col1:      
     st.write('Columnas Eliminadas:', options)
