@@ -44,6 +44,7 @@ def Regresion(X_train, X_test, Y_train, Y_test):
   PronosticoBA = RandomForestRegressor(random_state=0, max_depth=8, min_samples_leaf=2, min_samples_split=4)
   PronosticoBA.fit(X_train, Y_train)
   Y_Pronostico = PronosticoBA.predict(X_test)
+  st.write("**Parámetros del Modelo**")
   st.write("Bondad de Ajuste", r2_score(Y_test, Y_Pronostico))
   st.write('Criterio: \n', PronosticoBA.criterion)
   st.write('Importancia variables: \n', PronosticoBA.feature_importances_)
