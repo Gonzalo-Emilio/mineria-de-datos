@@ -18,6 +18,6 @@ if data is not None:
                 ('Muestra de Datos','Análisis Exploratorio de Datos', 'Selección de características',  
                 'Clustering', 
                 'Patrones Secuenciales', 
-                'Árboles de Decisión', 
-                'Bosques Aleatorios'))
+                'Pronóstico', 
+                'Clasificación'))
     Switch(Algoritmo, dataframe)

@@ -167,17 +167,17 @@ def particional(Data):
     plt.rcParams['figure.figsize'] = (10, 7)
     plt.style.use('ggplot')
     colores=['red', 'blue', 'green', 'yellow']
-    asignar=[]
-    for row in MParticional.labels_:
-        asignar.append(colores[row])
+    #asignar=[]
+    #for row in MParticional.labels_:
+    #    asignar.append(colores[row])
 
     fig = plt.figure()
     ax = Axes3D(fig)
     ax.scatter(MEstandar[:, 0], 
               MEstandar[:, 1], 
-              MEstandar[:, 2], marker='o', c=asignar, s=60)
+              MEstandar[:, 2], marker='o', s=60)
     ax.scatter(MParticional.cluster_centers_[:, 0], 
               MParticional.cluster_centers_[:, 1], 
-              MParticional.cluster_centers_[:, 2], marker='o', c=colores, s=1000)
+              MParticional.cluster_centers_[:, 2], marker='o', s=1000)
     plt.show()
     st.pyplot()

@@ -1,0 +1,10 @@
+streamlit
+kneed
+pandas
+numpy
+matplotlib
+seaborn
+sklearn
+apyori
+graphviz
+
